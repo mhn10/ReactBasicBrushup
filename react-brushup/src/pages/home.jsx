@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 
-import Button from "../components/Button";
 import Cards from "../components/card";
 import InputTextField from "../components/Input";
 
@@ -28,6 +27,7 @@ const reducer = (state, action) => {
 
 const Home = ({ props }) => {
     const [breeds, setBreeds] = React.useState([]);
+    const [searchList, setSearchList] = React.useState([]);
     const [homeState, dispatch] = React.useReducer(reducer, {
         searchText: "",
         BreedName: "",
@@ -46,6 +46,7 @@ const Home = ({ props }) => {
                 const { message } = response.data;
                 console.log("TCL: Dashboard -> message", message);
                 setBreeds(Object.keys(message));
+                setSearchList(Object.keys(message));
             })
             .catch(error => {
                 console.log("Error in useEffect nameAdd", error);
@@ -53,17 +54,34 @@ const Home = ({ props }) => {
             });
     }, []);
 
-    const nodeCards = breeds.slice(0, 12).map((breed, key) => {
+    const nodeCards = searchList.slice(0, 12).map((breed, key) => {
         console.log("Breed details : Breeds: ", breed, "Key", key);
         return <Cards Name={breed} />;
     });
+
+    const changeHandler = e => {
+        console.log("TCL: changeHandler ->  e", e.target.value);
+        if (e.target.value !== "") {
+            setSearchList(
+                breeds.filter(item => {
+                    const filter = e.target.value.toLowerCase();
+                    return item.includes(filter);
+                })
+            );
+        } else {
+            setSearchList(breeds);
+        }
+    };
     return (
         <>
             <homeContext.Provider value={{ homeState, dispatch }}>
                 <div>
                     <InputTextField>
                         <div className={"input"}>
-                            <input placeholder="Search Breed" />
+                            <input
+                                onChange={changeHandler}
+                                placeholder="Search Breed"
+                            />
                         </div>
                     </InputTextField>
                 </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect }  from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
@@ -9,96 +9,77 @@ import InputTextField from "../components/Input";
 
 import homeContext from "../context/homeContext";
 
-
 const reducer = (state, action) => {
     const { type } = action;
 
     switch (type) {
         case "changeState":
             return { ...state, step: action.value };
-        case "incrementState":
-            return {
-                ...state,
-                step: state.step < 4 ? state.step + 1 : state.step
-            };
-        case "decrementState":
-            return {
-                ...state,
-                step: state.step > 0 ? state.step - 1 : state.step
-            };
 
         case "setSearchText":
-            return { ...state, searchText: action.searchText};
+            return { ...state, searchText: action.searchText };
         case "setBreedName":
-            return { ...state, BreedName: action.BreedName};
+            return { ...state, BreedName: action.BreedName };
 
         default:
             return state;
     }
 };
 
-const Home = ({props})=> {
+const Home = ({ props }) => {
     const [breeds, setBreeds] = React.useState([]);
     const [homeState, dispatch] = React.useReducer(reducer, {
-
         searchText: "",
         BreedName: "",
         SearchResult: "",
-        BreedResult : "",
-        step  : 1,
-
+        BreedResult: "",
+        step: 1
     });
-    
-useEffect(() => {
-    console.log("fetch data here");
 
-    axios
-        .get(`https://dog.ceo/api/breeds/list/all`)
-        .then(response => {
-            console.log("Response node details", response.data.message);
-            const {message} = response.data;
-            console.log("TCL: Dashboard -> message", message)
-            setBreeds(Object.keys(message));
-        })
-        .catch(error => {
-            console.log("Error in useEffect nameAdd", error);
-            alert("No Data available, reload");
-        });
-}, []);
+    useEffect(() => {
+        console.log("fetch data here");
 
-const nodeCards = breeds.slice(0,12).map((breed, key) => {
-    console.log("Breed details : Breeds: ", breed, "Key", key);
+        axios
+            .get(`https://dog.ceo/api/breeds/list/all`)
+            .then(response => {
+                console.log("Response node details", response.data.message);
+                const { message } = response.data;
+                console.log("TCL: Dashboard -> message", message);
+                setBreeds(Object.keys(message));
+            })
+            .catch(error => {
+                console.log("Error in useEffect nameAdd", error);
+                alert("No Data available, reload");
+            });
+    }, []);
+
+    const nodeCards = breeds.slice(0, 12).map((breed, key) => {
+        console.log("Breed details : Breeds: ", breed, "Key", key);
+        return <Cards Name={breed} />;
+    });
     return (
-        <Cards
-            Name={breed}
-        />
-    );
-});
-    return ( 
         <>
-        <div>
-            < InputTextField>
-            <div className={'input'}>
-				<input
-					placeholder="Search Breed"
-				/>
-			</div>
-            </InputTextField>
-         </div>   
-        <Wrapper>
-        {nodeCards}
-        </Wrapper>
+            <homeContext.Provider value={{ homeState, dispatch }}>
+                <div>
+                    <InputTextField>
+                        <div className={"input"}>
+                            <input placeholder="Search Breed" />
+                        </div>
+                    </InputTextField>
+                </div>
+                <Wrapper>{nodeCards}</Wrapper>
+            </homeContext.Provider>
         </>
-    )
-}
+    );
+};
 
 export default withRouter(Home);
 
 const Label = styled.div`
-	color: #afafb1;
-	font-weight: 200;
-	padding-left: 1.5rem;
-	margin-bottom: 1rem;
+    color: #afafb1;
+    font-weight: 200;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
 `;
 
 const Wrapper = styled.div`
@@ -137,8 +118,6 @@ const Wrapper = styled.div`
         margin-top: 70px;
     }
 `;
-
-
 
 const ImageWrapper = styled.div`
     box-sizing: border-box;

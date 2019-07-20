@@ -7,7 +7,7 @@ const Cards = props => {
 
     const clickHandler = BreedName => {
         console.log("Breed Name is ", BreedName);
-        context.dispatch({ type: "setValue", BreedName });
+        context.dispatch({ type: "setBreedName", BreedName });
         context.dispatch({ type: "changeState", value: 2 });
     };
 

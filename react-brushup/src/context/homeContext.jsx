@@ -4,7 +4,9 @@ import * as React from 'react';
 const homeContext = {
 
     searchText: "",
-    result: "",
+    BreedName: "",
+    SearchResult: "",
+    BreedResult : "",
     step  : 1,
     dispatch: (action) => action
     

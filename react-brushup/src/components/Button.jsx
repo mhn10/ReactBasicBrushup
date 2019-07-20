@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
 const  Button = styled.button`
-border: 2px solid ;  
-text-transform: uppercase;
+border: 1px solid ;  
 font-size: 1em;
+color: lightcoral;
+background : #f8f8f8;
 padding: 0.5rem 1.5rem;
 border-radius: 50px;
 position: relative;

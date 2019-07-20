@@ -47,15 +47,3 @@ const CardContainer = styled.div`
     justify-content: center;
     padding-top: 3rem;
 `;
-
-const Meta = styled.div`
-    padding: 0.4rem 1rem;
-    background: #eff3fa;
-    border-radius: 50px;
-    color: #b2bddc;
-    text-transform: uppercase;
-    margin-bottom: 2rem;
-    margin-top: 2rem;
-    display: inline-block;
-    font-weight: 400;
-`;

@@ -4,8 +4,9 @@ import styled from "styled-components";
 import axios from "axios";
 
 import Cards from "../components/card";
+import Button from "../components/Button";
 import InputTextField from "../components/Input";
-
+import Gallery from "./gallery";
 import homeContext from "../context/homeContext";
 
 const reducer = (state, action) => {
@@ -20,6 +21,9 @@ const reducer = (state, action) => {
         case "setBreedName":
             return { ...state, BreedName: action.BreedName };
 
+        case "setBreedResult":
+                return { ...state, BreedResult: action.breedImage };
+    
         default:
             return state;
     }
@@ -71,10 +75,16 @@ const Home = ({ props }) => {
         } else {
             setSearchList(breeds);
         }
+        dispatch({ type: "changeState", value: 1 });
     };
+    const closeHandler= () => {
+        dispatch({ type: "changeState", value: 1 });
+    };
+
     return (
         <>
             <homeContext.Provider value={{ homeState, dispatch }}>
+                
                 <div>
                     <InputTextField>
                         <div className={"input"}>
@@ -85,7 +95,15 @@ const Home = ({ props }) => {
                         </div>
                     </InputTextField>
                 </div>
-                <Wrapper>{nodeCards}</Wrapper>
+                {homeState.step === 1 && (<Wrapper>{nodeCards}</Wrapper>)}
+                {homeState.step === 2 && (      <>     <div
+               
+                onClick={closeHandler}
+            >
+                <Button> Return </Button>
+            </div>
+            <ImageWrapper><Gallery/> </ImageWrapper>
+            </>)}
             </homeContext.Provider>
         </>
     );
